@@ -1,0 +1,42 @@
+/* =======
+
+	Template Name: Play Bootstrap
+	Author: UIdeck
+	Author URI: https://uideck.com/
+	Support: https://github.com/uideck/
+	Version: 1.0
+
+======== */
+
+@import "variables";
+@import "mixin";
+@import "common";
+@import "header";
+@import "hero";
+@import "features";
+@import "about";
+@import "faq";
+@import "contact";
+@import "footer";
+
+/* ====== Banner CSS ======= */
+.ud-page-banner {
+  padding-top: 130px;
+  padding-bottom: 80px;
+  background: var(--primary-color);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.ud-banner-content {
+  text-align: center;
+  max-width: 600px;
+  margin: auto;
+
+  h1 {
+    color: var(--white);
+    font-size: 38px;
+    font-weight: 600;
+  }
+}
