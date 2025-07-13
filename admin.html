@@ -428,7 +428,7 @@
             const resultContent = document.getElementById('add-result-content');
             
             try {
-                const response = await fetch('/.netlify/functions/add-certificate', {
+                const response = await fetch('/.netlify/functions/debug-add-certificate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -453,10 +453,18 @@
                     loadCertificates(); // Refresh the list
                 } else {
                     resultDiv.className = 'alert alert-danger';
+                    let debugInfo = '';
+                    if (result.debug) {
+                        debugInfo = `<details class="mt-2">
+                            <summary class="text-muted"><small>Debug Information</small></summary>
+                            <pre class="mt-2"><small>${JSON.stringify(result.debug, null, 2)}</small></pre>
+                        </details>`;
+                    }
                     resultContent.innerHTML = `
                         <h5><i class="lni lni-close"></i> Error Adding Certificate</h5>
                         <p>${result.error}</p>
                         ${result.note ? `<p class="text-muted mt-2"><small>${result.note}</small></p>` : ''}
+                        ${debugInfo}
                     `;
                 }
             } catch (error) {
