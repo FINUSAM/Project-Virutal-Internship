@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin Panel - SentriX</title>
+    <meta name="title" content="Admin Panel - SentriX">
+    <meta name="description" content="Admin panel for managing certificates and applications">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.compat.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css">
+    <link rel="stylesheet" href="assets/css/ud-styles.css">
+    <style>
+        .admin-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .certificate-form {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .certificate-list {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .certificate-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        .status-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        .status-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="ud-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg">
+                        <a class="navbar-brand" href="/">
+                     <img src="assets/images/logo/logo.jpg" alt="Logo">
+                  </a>
+                        <button class="navbar-toggler">
+                     <span class="toggler-icon"> </span>
+                     <span class="toggler-icon"> </span>
+                     <span class="toggler-icon"> </span>
+                  </button>
+                        <div class="navbar-collapse">
+                            <ul id="nav" class="navbar-nav mx-auto">
+                                <li class="nav-item">
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/#about">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/#internship">Internships</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/#faq">FAQs</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/#contact">Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href='/verify'>Verify</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="ud-page-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ud-banner-content">
+                        <h1>Admin Panel</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ud-about" style="padding: 80px 0;">
+        <div class="container">
+            <!-- Login Form (shown when not authenticated) -->
+            <div id="login-section" class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="admin-section">
+                        <h3 class="text-center">Admin Authentication</h3>
+                        <div class="certificate-form">
+                            <form id="login-form">
+                                <div class="ud-form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username" placeholder="Enter username" required>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                                </div>
+                                
+                                <div class="ud-form-group mb-0">
+                                    <button type="submit" class="ud-main-btn">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div id="login-result" class="mt-3" style="display: none;">
+                                <div class="alert" role="alert">
+                                    <div id="login-result-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard (shown when authenticated) -->
+            <div id="admin-dashboard" class="row" style="display: none;">
+                <div class="col-lg-12">
+                    <div class="ud-section-title text-center">
+                        <span>Certificate Management</span>
+                        <h2>Admin Dashboard</h2>
+                        <p>Manage certificates and view applications for SentriX.</p>
+                        <button id="logout-btn" class="ud-main-btn ud-border-btn" style="margin-top: 10px;">
+                            <i class="lni lni-exit"></i> Logout
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="admin-section">
+                        <h3>Add New Certificate</h3>
+                        <div class="certificate-form">
+                            <form id="add-certificate-form">
+                                <div class="ud-form-group">
+                                    <label for="certificateId">Certificate ID*</label>
+                                    <input type="text" id="certificateId" name="certificateId" placeholder="PVI-2024-001" required>
+                                    <small class="form-text text-muted">Format: XXX-YYYY-NNN (e.g., PVI-2024-001)</small>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="participantName">Participant Name*</label>
+                                    <input type="text" id="participantName" name="participantName" placeholder="John Doe" required>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="program">Program*</label>
+                                    <select id="program" name="program" required>
+                                        <option value="">Select Program</option>
+                                        <option value="Web Development Internship">Web Development Internship</option>
+                                        <option value="Machine Learning Internship">Machine Learning Internship</option>
+                                        <option value="Full Stack Web Development">Full Stack Web Development</option>
+                                        <option value="Data Science Internship">Data Science Internship</option>
+                                        <option value="Software Development Internship">Software Development Internship</option>
+                                        <option value="Generative AI Internship">Generative AI Internship</option>
+                                        <option value="Software Testing Internship">Software Testing Internship</option>
+                                        <option value="Cyber Security Internship">Cyber Security Internship</option>
+                                        <option value="Android Development Internship">Android Development Internship</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="completionDate">Completion Date*</label>
+                                    <input type="text" id="completionDate" name="completionDate" placeholder="December 2024" required>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="issuedDate">Issued Date</label>
+                                    <input type="date" id="issuedDate" name="issuedDate">
+                                    <small class="form-text text-muted">Leave empty to use current date</small>
+                                </div>
+                                
+                                <div class="ud-form-group">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status">
+                                        <option value="valid">Valid</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="revoked">Revoked</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="ud-form-group mb-0">
+                                    <button type="submit" class="ud-main-btn">
+                                        Add Certificate
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div id="add-result" class="mt-3" style="display: none;">
+                                <div class="alert" role="alert">
+                                    <div id="add-result-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="admin-section">
+                        <h3>Certificate List</h3>
+                        <div class="certificate-list">
+                            <div id="certificate-list">
+                                <p class="text-muted">Loading certificates...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="ud-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ud-footer-bottom">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <ul class="ud-footer-bottom-left">
+                                    <li>
+                                        <a href='/privacy-policy'>Privacy policy</a>
+                                    </li>
+                                    <li>
+                                        <a href='/code-of-conduct'>Code of Conduct</a>
+                                    </li>
+                                    <li>
+                                        <a href='/terms-and-conditions'>Terms & Conditions</a>
+                                    </li>
+                                    <li>
+                                        <a href='/returns'>Returns</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Authentication state
+        let isAuthenticated = false;
+        let sessionToken = null;
+
+        // Check if user is already authenticated
+        function checkAuthStatus() {
+            const token = localStorage.getItem('adminSessionToken');
+            if (token) {
+                // In a real app, you'd validate the token with the server
+                isAuthenticated = true;
+                sessionToken = token;
+                showAdminDashboard();
+            } else {
+                showLoginForm();
+            }
+        }
+
+        // Show login form
+        function showLoginForm() {
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('admin-dashboard').style.display = 'none';
+        }
+
+        // Show admin dashboard
+        function showAdminDashboard() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'block';
+            loadCertificates();
+        }
+
+        // Login form handler
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const loginData = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Logging in...';
+            submitBtn.disabled = true;
+            
+            const resultDiv = document.getElementById('login-result');
+            const resultContent = document.getElementById('login-result-content');
+            
+            try {
+                const response = await fetch('/.netlify/functions/admin-auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.style.display = 'block';
+                
+                if (response.ok && result.success) {
+                    resultDiv.className = 'alert alert-success';
+                    resultContent.innerHTML = `
+                        <h5><i class="lni lni-checkmark-circle"></i> Login Successful!</h5>
+                        <p>Welcome to the admin dashboard.</p>
+                    `;
+                    
+                    // Store session token
+                    sessionToken = result.sessionToken;
+                    localStorage.setItem('adminSessionToken', sessionToken);
+                    isAuthenticated = true;
+                    
+                    // Show admin dashboard after a short delay
+                    setTimeout(() => {
+                        showAdminDashboard();
+                        resultDiv.style.display = 'none';
+                    }, 1500);
+                    
+                    form.reset();
+                } else {
+                    resultDiv.className = 'alert alert-danger';
+                    resultContent.innerHTML = `
+                        <h5><i class="lni lni-close"></i> Login Failed</h5>
+                        <p>${result.error || 'Invalid credentials'}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'alert alert-danger';
+                resultContent.innerHTML = `
+                    <h5><i class="lni lni-close"></i> Error</h5>
+                    <p>An error occurred during login. Please try again.</p>
+                `;
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // Logout handler
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('adminSessionToken');
+            isAuthenticated = false;
+            sessionToken = null;
+            showLoginForm();
+        });
+
+        // Add certificate form handler
+        document.getElementById('add-certificate-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!isAuthenticated) {
+                // Show login required message
+                const loginDiv = document.createElement('div');
+                loginDiv.className = 'alert alert-warning mt-3';
+                loginDiv.innerHTML = `
+                    <h5><i class="lni lni-warning"></i> Authentication Required</h5>
+                    <p>Please login to access the admin panel.</p>
+                `;
+                form.parentNode.insertBefore(loginDiv, form.nextSibling);
+                
+                // Remove message after 3 seconds
+                setTimeout(() => {
+                    loginDiv.remove();
+                }, 3000);
+                return;
+            }
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const certificateData = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Adding...';
+            submitBtn.disabled = true;
+            
+            const resultDiv = document.getElementById('add-result');
+            const resultContent = document.getElementById('add-result-content');
+            
+            try {
+                const response = await fetch('/.netlify/functions/add-certificate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    },
+                    body: JSON.stringify(certificateData),
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    resultDiv.className = 'alert alert-success';
+                    resultContent.innerHTML = `
+                        <h5><i class="lni lni-checkmark-circle"></i> Certificate Added Successfully!</h5>
+                        <p><strong>Certificate ID:</strong> ${result.certificateId}</p>
+                        <p><strong>Participant:</strong> ${result.participantName}</p>
+                    `;
+                    form.reset();
+                    loadCertificates(); // Refresh the list
+                } else {
+                    resultDiv.className = 'alert alert-danger';
+                    resultContent.innerHTML = `
+                        <h5><i class="lni lni-close"></i> Error Adding Certificate</h5>
+                        <p>${result.error}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'alert alert-danger';
+                resultContent.innerHTML = `
+                    <h5><i class="lni lni-close"></i> Error</h5>
+                    <p>An error occurred while adding the certificate. Please try again.</p>
+                `;
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+
+        // Load certificates function
+        async function loadCertificates() {
+            const certificateList = document.getElementById('certificate-list');
+            
+            try {
+                // For now, we'll show a message since we don't have a list function yet
+                certificateList.innerHTML = `
+                    <div class="text-center">
+                        <p class="text-muted">Certificate management is active.</p>
+                        <p class="text-muted">Certificates added here will be available for verification.</p>
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="lni lni-shield"></i> All certificates are stored securely in the database.
+                            </small>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                certificateList.innerHTML = `
+                    <div class="alert alert-warning">
+                        <p>Unable to load certificates. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+        });
+    </script>
+</body>
+
+</html> 
