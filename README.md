@@ -103,7 +103,7 @@ project-intern/
 ├── index.html                 # Main landing page
 ├── apply.html                 # Application form
 ├── verify.html               # Certificate verification page
-├── admin.html                # Admin panel for certificate management
+├── adminoly.html                # Admin panel for certificate management
 ├── netlify.toml              # Netlify configuration
 ├── package.json              # Dependencies
 ├── netlify/
@@ -182,7 +182,7 @@ The contact form on the main page uses a separate Netlify Function:
 
 ### Admin Panel
 
-The admin panel (`/admin.html`) includes authentication:
+The admin panel (`/adminoly.html`) includes authentication:
 - **Function**: `admin-auth.js` - Handles login authentication
 - **Security**: Requires `ADMIN_USERNAME` and `ADMIN_PASSWORD` environment variables
 - **Access**: Only authenticated users can add certificates

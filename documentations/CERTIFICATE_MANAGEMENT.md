@@ -17,7 +17,7 @@ See `DATABASE_SETUP.md` for detailed instructions.
 ### **Method 1: Admin Panel (Recommended)**
 
 1. **Deploy your site** to Netlify
-2. **Visit the admin panel**: `https://your-site.netlify.app/admin.html`
+2. **Visit the admin panel**: `https://your-site.netlify.app/adminoly.html`
 3. **Fill out the form** with certificate details:
    - Certificate ID (e.g., PVI-2024-001)
    - Participant Name

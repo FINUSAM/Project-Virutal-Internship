@@ -29,7 +29,7 @@ ADMIN_PASSWORD=your-secure-password
 ```
 
 #### Step 3: Test the Admin Panel
-1. Go to your admin panel: `https://your-site.netlify.app/admin`
+1. Go to your admin panel: `https://your-site.netlify.app/adminoly`
 2. Login with your admin credentials
 3. Try adding a certificate
 
