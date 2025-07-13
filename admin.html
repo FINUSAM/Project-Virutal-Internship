@@ -229,6 +229,12 @@
                     <div class="admin-section">
                         <h3>Certificate List</h3>
                         <div class="certificate-list">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span id="certificate-count" class="text-muted">Loading...</span>
+                                <button id="refresh-certificates" class="btn btn-sm btn-outline-primary">
+                                    <i class="lni lni-reload"></i> Refresh
+                                </button>
+                            </div>
                             <div id="certificate-list">
                                 <p class="text-muted">Loading certificates...</p>
                             </div>
@@ -428,7 +434,7 @@
             const resultContent = document.getElementById('add-result-content');
             
             try {
-                const response = await fetch('/.netlify/functions/debug-add-certificate', {
+                const response = await fetch('/.netlify/functions/add-certificate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -487,27 +493,98 @@
             const certificateList = document.getElementById('certificate-list');
             
             try {
-                // For now, we'll show a message since we don't have a list function yet
+                // Show loading state
                 certificateList.innerHTML = `
                     <div class="text-center">
-                        <p class="text-muted">Certificate management is active.</p>
-                        <p class="text-muted">Certificates added here will be available for verification.</p>
-                        <div class="mt-3">
-                            <small class="text-muted">
-                                <i class="lni lni-shield"></i> All certificates are stored securely in the database.
-                            </small>
-                        </div>
+                        <p class="text-muted">
+                            <i class="lni lni-spinner-arrow spin"></i> Loading certificates...
+                        </p>
                     </div>
                 `;
+                
+                // Fetch certificates from the API
+                const response = await fetch('/.netlify/functions/list-certificates', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    if (result.certificates && result.certificates.length > 0) {
+                        // Display certificates
+                        const certificatesHtml = result.certificates.map(cert => {
+                            const statusClass = cert.status === 'valid' ? 'status-valid' : 
+                                              cert.status === 'pending' ? 'status-pending' : 'status-revoked';
+                            const statusText = cert.status.charAt(0).toUpperCase() + cert.status.slice(1);
+                            
+                            return `
+                                <div class="certificate-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8">
+                                            <h6 class="mb-1">${cert.certificateId}</h6>
+                                            <p class="mb-1"><strong>${cert.participantName}</strong></p>
+                                            <p class="mb-1 text-muted">${cert.program}</p>
+                                            <small class="text-muted">
+                                                Completion: ${cert.completionDate} | 
+                                                Issued: ${new Date(cert.issuedDate).toLocaleDateString()}
+                                            </small>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <span class="status-badge ${statusClass}">${statusText}</span>
+                                            <br>
+                                            <small class="text-muted">
+                                                Added: ${new Date(cert.createdAt).toLocaleDateString()}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        
+                        certificateList.innerHTML = `
+                            ${certificatesHtml}
+                        `;
+                        
+                        // Update certificate count
+                        document.getElementById('certificate-count').textContent = `Total Certificates: ${result.total}`;
+                    } else {
+                        // No certificates found
+                        certificateList.innerHTML = `
+                            <div class="text-center">
+                                <p class="text-muted">No certificates found.</p>
+                                <p class="text-muted">Add your first certificate using the form on the left.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    // Error loading certificates
+                    certificateList.innerHTML = `
+                        <div class="alert alert-warning">
+                            <p>Unable to load certificates: ${result.error || 'Unknown error'}</p>
+                        </div>
+                    `;
+                }
             } catch (error) {
                 console.error('Error loading certificates:', error);
                 certificateList.innerHTML = `
                     <div class="alert alert-warning">
                         <p>Unable to load certificates. Please try again later.</p>
+                        <small class="text-muted">Error: ${error.message}</small>
                     </div>
                 `;
             }
         }
+
+        // Refresh certificates button
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#refresh-certificates')) {
+                loadCertificates();
+            }
+        });
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
