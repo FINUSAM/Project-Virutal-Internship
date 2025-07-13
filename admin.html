@@ -232,6 +232,18 @@
                             <div id="certificate-list">
                                 <p class="text-muted">Loading certificates...</p>
                             </div>
+                            <div class="mt-3">
+                                <div class="alert alert-info">
+                                    <h6><i class="lni lni-information"></i> Setup Information</h6>
+                                    <p class="mb-2">To enable persistent certificate storage:</p>
+                                    <ol class="mb-0">
+                                        <li>Set up MongoDB Atlas database</li>
+                                        <li>Configure MONGODB_URI environment variable</li>
+                                        <li>Set ADMIN_USERNAME and ADMIN_PASSWORD</li>
+                                    </ol>
+                                    <p class="mt-2 mb-0"><small>See <code>setup-admin.md</code> for detailed instructions.</small></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -435,6 +447,7 @@
                         <h5><i class="lni lni-checkmark-circle"></i> Certificate Added Successfully!</h5>
                         <p><strong>Certificate ID:</strong> ${result.certificateId}</p>
                         <p><strong>Participant:</strong> ${result.participantName}</p>
+                        ${result.note ? `<p class="text-muted mt-2"><small>${result.note}</small></p>` : ''}
                     `;
                     form.reset();
                     loadCertificates(); // Refresh the list
@@ -443,6 +456,7 @@
                     resultContent.innerHTML = `
                         <h5><i class="lni lni-close"></i> Error Adding Certificate</h5>
                         <p>${result.error}</p>
+                        ${result.note ? `<p class="text-muted mt-2"><small>${result.note}</small></p>` : ''}
                     `;
                 }
             } catch (error) {

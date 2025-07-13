@@ -8,6 +8,11 @@ exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      },
       body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
@@ -54,6 +59,11 @@ exports.handler = async (event, context) => {
       if (!data[field] || data[field].trim() === '') {
         return {
           statusCode: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+          },
           body: JSON.stringify({ 
             error: `Missing required field: ${field}` 
           })
@@ -65,22 +75,24 @@ exports.handler = async (event, context) => {
     if (!data.certificateId.match(/^[A-Z]{3}-\d{4}-\d{3}$/)) {
       return {
         statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
         body: JSON.stringify({ 
           error: 'Certificate ID must be in format: XXX-YYYY-NNN (e.g., PVI-2024-001)' 
         })
       };
     }
 
-    // Connect to MongoDB
+    // Check if database is configured
     if (!process.env.MONGODB_URI) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ 
-          error: 'Database not configured' 
-        })
-      };
+      console.log('Database not configured, using mock storage');
+      return await handleMockCertificateAddition(data);
     }
 
+    // Connect to MongoDB
     const client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
     
@@ -96,6 +108,11 @@ exports.handler = async (event, context) => {
       await client.close();
       return {
         statusCode: 409,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
         body: JSON.stringify({ 
           error: 'Certificate ID already exists' 
         })
@@ -139,6 +156,22 @@ exports.handler = async (event, context) => {
   } catch (error) {
     console.error('Error adding certificate:', error);
     
+    // Check if it's a database connection error
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoServerSelectionError') {
+      return {
+        statusCode: 503,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          error: 'Database connection failed. Please check your database configuration.',
+          status: 'Error'
+        })
+      };
+    }
+    
     return {
       statusCode: 500,
       headers: {
@@ -152,4 +185,27 @@ exports.handler = async (event, context) => {
       })
     };
   }
-}; 
+};
+
+// Fallback mock certificate addition function
+async function handleMockCertificateAddition(data) {
+  // In a real implementation, you might store this in memory or a simple file
+  // For now, we'll just simulate success
+  console.log('Mock certificate addition:', data);
+  
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    },
+    body: JSON.stringify({
+      message: 'Certificate added successfully! (Mock mode - database not configured)',
+      certificateId: data.certificateId,
+      participantName: data.participantName,
+      status: 'Success',
+      note: 'This is running in mock mode. Configure MONGODB_URI environment variable for persistent storage.'
+    })
+  };
+} 

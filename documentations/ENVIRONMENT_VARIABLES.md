@@ -5,13 +5,13 @@ This document lists all the environment variables required for the SentriX appli
 ## Email Configuration
 
 ### Required for Email Functionality
-- `EMAIL_HOST` - SMTP server host (e.g., "smtp.gmail.com")
+- `EMAIL_HOST` - SMTP server host (e.g., "smtp.gmail.com" or "smtp.zoho.com")
 - `EMAIL_PORT` - SMTP server port (e.g., 587)
 - `EMAIL_USER` - Email address for sending emails
 - `EMAIL_PASS` - Email password or app-specific password
 - `EMAIL_FROM` - From email address (usually same as EMAIL_USER)
 
-### Example Email Configuration
+### Gmail Configuration
 ```bash
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
@@ -19,6 +19,20 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 EMAIL_FROM=your-email@gmail.com
 ```
+
+### Zoho Mail Configuration
+```bash
+EMAIL_HOST=smtp.zoho.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@yourdomain.com
+EMAIL_PASS=your-zoho-password
+EMAIL_FROM=your-email@yourdomain.com
+```
+
+**Note for Zoho Mail:**
+- Use your Zoho Mail password (not an app-specific password like Gmail)
+- If you have 2FA enabled, you may need to generate an app-specific password
+- Make sure your Zoho Mail account is properly configured for SMTP access
 
 ## Database Configuration
 
@@ -51,12 +65,19 @@ EMAIL_FROM=your-email@gmail.com
 ### 1. Local Development
 Create a `.env` file in your project root:
 ```bash
-# Email Configuration
+# Email Configuration (Gmail)
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 EMAIL_FROM=your-email@gmail.com
+
+# OR Email Configuration (Zoho Mail)
+EMAIL_HOST=smtp.zoho.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@yourdomain.com
+EMAIL_PASS=your-zoho-password
+EMAIL_FROM=your-email@yourdomain.com
 
 # Database Configuration (Choose one)
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database

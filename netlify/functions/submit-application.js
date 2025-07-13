@@ -62,23 +62,23 @@ exports.handler = async (event, context) => {
       Submitted on: ${new Date().toISOString()}
     `;
 
-    // Send email if SMTP credentials are configured
+    // Send email if email credentials are configured
     // These will be set in Netlify dashboard, not in the code
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = nodemailer.createTransporter({
-          host: process.env.SMTP_HOST,
-          port: process.env.SMTP_PORT || 587,
+          host: process.env.EMAIL_HOST,
+          port: process.env.EMAIL_PORT || 587,
           secure: false, // true for 465, false for other ports
           auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
           },
         });
 
         const mailOptions = {
-          from: process.env.SMTP_USER,
-          to: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
+          from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+          to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
           subject: 'New Internship Application - SentriX',
           text: emailContent,
           html: `
