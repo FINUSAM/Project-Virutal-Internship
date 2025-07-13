@@ -155,6 +155,12 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Error adding certificate:', error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      hasMongoUri: !!process.env.MONGODB_URI
+    });
     
     // Check if it's a database connection error
     if (error.name === 'MongoNetworkError' || error.name === 'MongoServerSelectionError') {
@@ -167,6 +173,24 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           error: 'Database connection failed. Please check your database configuration.',
+          details: error.message,
+          status: 'Error'
+        })
+      };
+    }
+    
+    // Check if it's a MongoDB authentication error
+    if (error.name === 'MongoServerError' && error.message.includes('authentication')) {
+      return {
+        statusCode: 503,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        },
+        body: JSON.stringify({
+          error: 'Database authentication failed. Please check your MongoDB credentials.',
+          details: error.message,
           status: 'Error'
         })
       };
@@ -181,6 +205,7 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         error: 'Internal server error. Please try again later.',
+        details: error.message,
         status: 'Error'
       })
     };

@@ -8,8 +8,8 @@
     "build": "echo 'No build step required'"
   },
   "dependencies": {
-    "nodemailer": "^6.9.7",
-    "mongodb": "^5.0.0"
+    "mongodb": "^5.9.2",
+    "nodemailer": "^6.9.7"
   },
   "devDependencies": {
     "@netlify/functions": "^2.0.0"
@@ -22,4 +22,4 @@
   ],
   "author": "Your Name",
   "license": "MIT"
-} 
+}
