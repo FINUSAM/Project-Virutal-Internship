@@ -1,6 +1,6 @@
 # Certificate Management Guide
 
-This guide covers how to add and manage certificate data in your SentriX platform.
+This guide covers how to add and manage certificate data in your CyberSync platform.
 
 ## 🗄️ **Database Setup Required**
 
@@ -104,7 +104,7 @@ If you have MongoDB Atlas access:
 - **Pattern**: `XXX-YYYY-NNN`
 - **Example**: `PVI-2024-001`
 - **Where**:
-  - `XXX`: Organization code (SRI = SentriX)
+  - `XXX`: Organization code (SRI = CyberSync)
   - `YYYY`: Year (2024)
   - `NNN`: Sequential number (001, 002, 003...)
 
@@ -233,7 +233,7 @@ The system logs all verification attempts:
 ## 📞 **Support**
 
 ### **For Certificate Issues:**
-- Contact: support@sentrix.in.net
+- Contact: support@cybersync.in.net
 - Include certificate ID and participant name
 - Provide error messages if available
 

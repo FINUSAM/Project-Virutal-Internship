@@ -1,6 +1,6 @@
 # Deployment Guide: Public GitHub to Netlify
 
-This guide covers deploying your SentriX site from a public GitHub repository to Netlify.
+This guide covers deploying your CyberSync site from a public GitHub repository to Netlify.
 
 ## 🚀 **Step-by-Step Deployment**
 
@@ -14,7 +14,7 @@ git init
 git add .
 
 # Commit changes
-git commit -m "Initial commit: SentriX"
+git commit -m "Initial commit: CyberSync"
 
 # Add your GitHub repository as remote
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git

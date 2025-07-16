@@ -1,6 +1,6 @@
 # Database Setup Guide for Netlify Functions
 
-This guide covers integrating databases with your Netlify Functions for the SentriX platform.
+This guide covers integrating databases with your Netlify Functions for the CyberSync platform.
 
 ## 🗄️ **Recommended Database Options**
 

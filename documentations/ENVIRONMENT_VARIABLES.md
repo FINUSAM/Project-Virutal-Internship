@@ -1,6 +1,6 @@
 # Environment Variables
 
-This document lists all the environment variables required for the SentriX application.
+This document lists all the environment variables required for the CyberSync application.
 
 ## Email Configuration
 

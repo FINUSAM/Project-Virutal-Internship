@@ -79,7 +79,7 @@ exports.handler = async (event, context) => {
         const mailOptions = {
           from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
           to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
-          subject: 'New Internship Application - SentriX',
+          subject: 'New Internship Application - CyberSync',
           text: emailContent,
           html: `
             <h2>New Internship Application Received</h2>

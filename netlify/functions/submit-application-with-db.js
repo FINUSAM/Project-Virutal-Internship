@@ -128,7 +128,7 @@ exports.handler = async (event, context) => {
         const mailOptions = {
           from: process.env.SMTP_USER,
           to: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
-          subject: 'New Internship Application - SentriX',
+          subject: 'New Internship Application - CyberSync',
           html: `
             <h2>New Internship Application Received</h2>
             <p><strong>Name:</strong> ${data.fullName}</p>

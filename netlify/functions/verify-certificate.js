@@ -134,7 +134,7 @@ exports.handler = async (event, context) => {
           suggestions: [
             'Verify the certificate ID is correct',
             'Ensure the participant name matches exactly',
-            'Check that the certificate is from SentriX',
+            'Check that the certificate is from CyberSync',
             'Contact support if you believe this is an error'
           ]
         })

@@ -1,4 +1,4 @@
-# SentriX
+# CyberSync
 
 A virtual internship platform built with HTML, CSS, and JavaScript, deployed on Netlify with serverless functions for form handling.
 
